@@ -44,15 +44,17 @@ async function addData(req, res, next) {
     });
   }
 }
-
 async function addData(req, res, next) {
+  console.log("Alooo")
   try {
-     
-      res.json({
+
+    const tasks = await Medicion.find();
+     res.json(tasks);
+    /*  res.json({
         events: [
           obj,
         ],
-      });
+      });*/
     
   } catch (error) {
     res.status(500).json({

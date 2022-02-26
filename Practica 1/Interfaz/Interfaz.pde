@@ -100,7 +100,8 @@ void draw() {
   text ("Nivel de CO2", 220, 90);
 
   textSize (40);
-  text (CO2Arduino + " ppm", 275, 160);
+  text (CO2Arduino, 280, 150);
+  text ("ppm", 280, 175);
 
   //*************************************
   //           Animar Luz
@@ -171,7 +172,7 @@ void getData() {
 void printEventDetails(JSONObject guildEvent) {
   //Asignacion de valores a las variables
   CO2Arduino = guildEvent.getInt("CO2");
-  IluminacionArduino = guildEvent.getInt("Iluminacion");
+  IluminacionArduino = 600 - guildEvent.getInt("Iluminacion");
   HumedadArduino = 100 - ((guildEvent.getInt("Humedad")*100)/1024);
   TemperaturaIntArduino = guildEvent.getInt("TemperaturaInterna");
   TemperaturaExtArduino = guildEvent.getInt("TemperaturaExterna");

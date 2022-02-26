@@ -1,0 +1,5 @@
+use medicion
+db.createCollection("mediciones")
+db.mediciones.insert({objeto Json})
+db.mediciones.find()
+db.mediciones.count()
