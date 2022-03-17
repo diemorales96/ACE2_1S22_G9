@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Line, defaults } from "react-chartjs-2";
 import { Cuadro, Rectangulo, Cuadro2, RectanguloB, Carta, Texto } from './StyledElements'
 import io from 'socket.io-client';
 import '../App.css';
 import {Nav} from './StyledElements'
+var sd = require('silly-datetime')
 
-const baseUrl = "http://localhost:3000";
+
+const baseUrl = "http://localhost:5000";
 
 
 
@@ -16,18 +18,50 @@ function Pruebas() {
   const [graph3, setGraph3] = useState([])
   const [graph4, setGraph4] = useState([])
   const [graph5, setGraph5] = useState([])
+  const [porcentaje, setPorcentaje] = useState([])
+  const [axis, setAxis] = useState([0])
 
-      //-----------SOCKET CONNECTION
-      const socket = io.connect(baseUrl);
+  const socket = useRef();
  
       //-------------------
-      useEffect(() => {      
-        socket.emit("ram", "asd-prueba");    
-        socket.on("ram", async (mensaje) => {
-        console.log("MENSAJE: ", mensaje);
-        //llenar(mensaje)
-        })
-      }, [socket]);
+  useEffect(() => {
+  console.log("Conexion Front")
+  socket.current = io.connect("http://localhost:5000");
+  socket.current.emit("medicion", "asd-prueba");
+  socket.current.on("medicion", async (mensaje) => {
+    console.log("MENSAJE: ", mensaje);
+    let f;
+    let mes;
+    const Array = mensaje.map( ({Fecha,NivelAgua,Humedad,Turbidez,PH}, i) => {
+      return (
+              Humedad
+      )
+    })
+    const fecha = mensaje.map( ({Fecha,NivelAgua,Humedad,Turbidez,PH}, i) => {
+      var fecha_string = new Date(Fecha);
+      var Xmas95 = new Date(Fecha);
+      mes = Xmas95.toLocaleString('default', { weekday: 'long' })
+      //var hours = Xmas95.getHours();
+
+      console.log(mes); // 23
+      f = fecha_string.getHours().toString() + ":" + fecha_string.getMinutes().toString()+ ":" + fecha_string.getSeconds().toString();
+      
+      //dia = fecha_string.getDay().toString();
+      //console.log(fecha_string);
+      //console.log(fecha_string.getMinutes());
+      return (
+            f
+      )
+    })
+    setPorcentaje(Array);
+
+    setAxis(fecha);
+    console.log(Array);
+  })
+  
+  return () => {
+    socket.current.disconnect();
+  };}, [socket]);
   
 
 
@@ -48,11 +82,11 @@ function Pruebas() {
     <a className="card">
     <Line
           data={{
-            labels: [1,2,5,1,1,1,1,1,1,1,1,1,1],
+            labels: axis,
             datasets: [
               {
                 label: "graph5",
-                data: [1,2,3,2,4,6,7,8,23,44,22,3,2,9],
+                data: porcentaje,
                 borderColor: "blue",
                 borderWidth: 1,
               },
