@@ -3,9 +3,12 @@ import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
-  background: #000;
+  background-color: var(--bg);
   height: 80px;
   display: flex;
+  position: fixed;
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
   justify-content: space-between;
   padding: 0.5rem calc((100vw - 1000px) / 2);
   z-index: 10;
@@ -38,14 +41,13 @@ export const RectanguloB = styled.div`
 `;
 
 export const Cuadro = styled.div`
-display: flex;
-width: 350px;
-height: 300px;
-border: 2px solid #feb236;
+display: grid;
+width: 190px;
+height: 190px;
+border: 2px solid var(--bg);
 background-color: #fff;
-border-radius: 25px;
-
-
+border-radius: 50px;
+justify-content: center;
 `;
 export const Cuadro2 = styled.div`
 display: grid;
@@ -56,6 +58,7 @@ border: 4px solid rgb(14, 13, 13);
 background: white;  /* fallback for old browsers */
 clear: both;
 margin-bottom: 0;
+border-radius: 10px;
 `;
 
 

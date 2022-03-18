@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   background-color: #d5f4e6;
+  /*background-image: url("./icons/fondo2.jpg")*/
 }
 
 .App-logo {
@@ -77,9 +78,44 @@ a {
   --bg-filter-opacity: 0.5;
   background-color: #fff;
   height: 20em;
-  width: 18em;
+  width: 17.5em;
   font-size: 1.5em;
   color: white;
+  border-radius: 1em;
+  padding: 1em;
+  /*margin: 2em;*/
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 5em -1em black;
+  transition: all, var(--transition-time);
+  position: relative;
+  overflow: hidden;
+  border: 10px solid #282c34;
+  text-decoration: none;
+}
+
+
+.cards-wrapper2 {
+  display: center;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 4rem;
+  padding: 4rem;
+  margin: 0 auto;
+  width: max-content;
+}
+
+.card2 {
+  font-family: 'Heebo';
+  --bg-filter-opacity: 0.5;
+  background-color: #fff;
+  height: 10em;
+  width: 26em;
+  font-size: 1.5em;
+  /*color: white;*/
   border-radius: 1em;
   padding: 1em;
   /*margin: 2em;*/
@@ -226,6 +262,9 @@ a {
   .card {
     max-width: calc(100vw - 4rem);
   }
+  .card2 {
+    max-width: calc(100vw - 4rem);
+  }
 }
 
 @media screen and (max-width: 450px) {
@@ -236,4 +275,117 @@ a {
   .info h1 {
     margin: 0;
   }
+}
+
+
+
+
+/*ssssssssssssss******************************************************************sssssss*/
+.card2:hover {
+  transform: rotate(0);
+}
+
+.card2 h1 {
+  margin: 0;
+  font-size: 1.5em;
+  line-height: 1.2em;
+  background-color:saddlebrown;
+}
+
+.card2 h2 {
+  font-size: 1em;
+  text-align: center;
+}
+
+.card2 p {
+  font-size: 0.75em;
+  font-family: 'Open Sans';
+  margin-top: 0.5em;
+  line-height: 2em;
+}
+
+.card2 .tags {
+  display: flex;
+}
+
+.card2 .tags .tag {
+  font-size: 0.75em;
+  background: rgba(255,255,255,0.5);
+  border-radius: 0.3rem;
+  padding: 0 0.5em;
+  margin-right: 0.5em;
+  line-height: 1.5em;
+  transition: all, var(--transition-time);
+}
+
+.card2:hover .tags .tag {
+  background: var(--color);
+  color: white;
+}
+
+.card2 .date {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.75em;
+  padding: 1em;
+  line-height: 1em;
+  opacity: .8;
+}
+
+.card2:before, .card2:after {
+  content: '';
+  transform: scale(0);
+  transform-origin: top left;
+  border-radius: 50%;
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  z-index: -5;
+  transition: all, var(--transition-time);
+  transition-timing-function: ease-in-out;
+}
+
+.card2:before {
+  background: #ddd;
+  width: 250%;
+  height: 250%;
+}
+
+.card2:after {
+  background: white;
+  width: 200%;
+  height: 200%;
+}
+
+.card2:hover {
+  color: var(--color);
+}
+
+.card2:hover:before, .card2:hover:after {
+  transform: scale(1);
+}
+
+.card2-grid-space .num {
+  font-size: 3em;
+  margin-bottom: 1.2rem;
+  margin-left: 1rem;
+  background-color: #deeaee;
+}
+
+.info2 {
+  font-size: 1.2em;
+  display: flex;
+  padding: 1em 3em;
+  height: 3em;
+}
+
+.info2 img {
+  height: 3em;
+  margin-right: 0.5em;
+}
+
+.info2 h1 {
+  font-size: 1em;
+  font-weight: normal;
 }

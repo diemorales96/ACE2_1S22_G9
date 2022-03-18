@@ -14,8 +14,8 @@ const SerialPort = require("serialport");
 const ReadLine = require("@serialport/parser-readline");
 var sd = require('silly-datetime')
 //Cambia para los otros el puerto
-const port = new SerialPort("COM7", { baudRate: 9600 });
-const parser = port.pipe(new ReadLine({ delimiter: "\n" }));
+//const port = new SerialPort("COM7", { baudRate: 9600 });
+//const parser = port.pipe(new ReadLine({ delimiter: "\n" }));
 
 
 const app = express();
@@ -31,12 +31,14 @@ app.get("/", (req, res) => res.send("Welcome to my API!"));
 
 
 
-port.on("open", () => {
+/*port.on("open", () => {
 	console.log("Se abrió la comunicación");
 });
-
+*/
 let datos;
 
+
+/*
 let obj ;
 parser.on("data", (data) => {
 	var time=sd.format(new Date(), 'MMM DD, YYYY HH:mm:ss');
@@ -46,7 +48,7 @@ parser.on("data", (data) => {
 	console.log(obj);
     const newMedicion = new Medicion(obj);
     //newMedicion.save(); 
-});
+});*/
 
 var server = http.createServer(app);
 const io = socketIo(
