@@ -5,7 +5,8 @@ import { Cuadro, Rectangulo, Cuadro2, RectanguloB, Carta, Texto } from './Styled
 import io from 'socket.io-client';
 import '../App.css';
 import { Nav } from './StyledElements'
-
+import Select from 'react-select';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
@@ -15,6 +16,11 @@ const baseUrl = "http://localhost:5000";
 
 function Pruebas() {
   //HOOKS
+  const actions = [
+    { label: "Add", value: 1 },
+    { label: "Delete", value: 2 }
+  ];
+
 
   //----PARA GRAFICAS-----------
   const [graph1, setGraph1] = useState([])
@@ -24,40 +30,55 @@ function Pruebas() {
   const [graph5, setGraph5] = useState([])
 
   //------ PARA DASHBOARD--------
-  const [humedad,setHumedad] = useState([])
-  const [turbidez,setTurbidez] = useState([])
-  const [nivelagua,setNivelagua] = useState([])
+  const [humedad, setHumedad] = useState([])
+  const [turbidez, setTurbidez] = useState([])
+  const [nivelagua, setNivelagua] = useState([])
 
   //--------AXIS DE LAS GRAFICAS
   const [axis, setAxis] = useState([0])
 
   //---------PRUEBAS/TESTS
   const [porcentaje, setPorcentaje] = useState([])
-  const [filterDate, setFilterDate]=useState([])
-  const [filtro1, setFiltro1]=useState([])
+  const [filterDate, setFilterDate] = useState([])
+  const [filtro1, setFiltro1] = useState([])
+
+  //-----------FILTRO
+  const [inputvalue, setValue] = useState('')
+  const [selectedValued, setSelectedValue] = useState(null)
+  const handleInputChance = value => {
+    setValue(value)
+  }
+
+  const handleChange = value => {
+    setSelectedValue(value)
+  }
 
   const socket = useRef();
+  const filtroFechas = useRef([])
 
 
   //-----FUNCION PARA LLENAR EL DASHBOARD REAL TIME--
 
-  function fillDasboard(data){
-    setHumedad(info=> data[data.length-1].Humedad)
-    setTurbidez(info=> data[data.length-1].Turbidez)
-    setNivelagua(info=> data[data.length-1].NivelAgua)
+  function fillDasboard(data) {
+    setHumedad(info => data[data.length - 1].Humedad)
+    setTurbidez(info => data[data.length - 1].Turbidez)
+    setNivelagua(info => data[data.length - 1].NivelAgua)
   }
 
 
-  function saveDate2(date){
-    let aux=[]
-    date.map((value, index) => {
-      if(aux.indexOf(value)>-1){
+  function saveDate2(date) {
+    let aux = []
+    let aux2 = []
+    date.map((values, index) => {
+      if (aux.indexOf(values) > -1) {
         console.log("Ya existe la fecha bb")
-      }else{
-         aux.push(value)
+      } else {
+        const obj = { label: values, value: index }
+        aux.push(values)
+        aux2.push(obj)
       }
     })
-    setFilterDate(aux)
+    setFilterDate(aux2)
   }
 
   //-------------------
@@ -73,18 +94,18 @@ function Pruebas() {
 
       //-------MAPEOS PARA GRAFICAS---------
       let f;
-      let mes=[]; 
+      let mes = [];
       const Array = mensaje.map(({ Fecha, NivelAgua, Humedad, Turbidez, PH }, i) => {
         return (
           Humedad
         )
       })
+      
       const fecha = mensaje.map(({ Fecha, NivelAgua, Humedad, Turbidez, PH }, i) => {
         var fecha_string = new Date(Fecha);
-       // saveDate(fecha_string)
-       /* if(fechaFiltro) then return fecha que contenga el friltro
-       1 fecha map para cada grafica */
-        mes.push(fecha_string.getDate()+'/'+(fecha_string.getMonth()+1))
+        /* if(fechaFiltro) then return fecha que contenga el friltro
+        1 fecha map para cada grafica */
+        mes.push(fecha_string.getDate() + '/' + (fecha_string.getMonth() + 1))
         f = fecha_string.getHours().toString() + ":" + fecha_string.getMinutes().toString() + ":" + fecha_string.getSeconds().toString();
 
         return (
@@ -106,23 +127,36 @@ function Pruebas() {
 
 
 
-console.log(filterDate)
+  console.log(selectedValued)
   return (
 
     <div>
+      /*******************************/
+      /*NAV Y FILTRO PARA FECHAS */
       <Nav>
         <Texto>
           <h1>DASHBOARD</h1>
         </Texto>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-4'></div>
+            <div className='col-md-4'>
+              <Select options={filterDate} value={selectedValued} OnInputChange={handleChange} onChange={handleChange} />
+            </div>
+            <div className='con-md-4'></div>
+          </div>
+        </div>
       </Nav>
 
+/******************************************************************/
+/*SECCION DE CARD-WRAPPER PARA ALOCAR EL DASHBOARD DE MEDICIONES */
       <section className='cards-wrapper2'>
         <div className="card-grid-space">
           <h1>MEDICIONES</h1>
           <a className="card2" >
             <Cuadro>
-            <h2>Humedad</h2>
-            <h2>{humedad}%</h2>
+              <h2>Humedad</h2>
+              <h2>{humedad}%</h2>
             </Cuadro>
             <Cuadro>
               <h2>Turbidez</h2>
@@ -135,6 +169,9 @@ console.log(filterDate)
           </a>
         </div>
       </section>
+
+   
+
       <section className="cards-wrapper">
         <div className="card-grid-space">
           filtro?
