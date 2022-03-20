@@ -14,7 +14,7 @@ const SerialPort = require("serialport");
 const ReadLine = require("@serialport/parser-readline");
 var sd = require('silly-datetime')
 //Cambia para los otros el puerto
-const port = new SerialPort("COM7", { baudRate: 9600 });
+const port = new SerialPort("COM3", { baudRate: 9600 });
 const parser = port.pipe(new ReadLine({ delimiter: "\n" }));
 
 
@@ -45,7 +45,7 @@ parser.on("data", (data) => {
 	obj = JSON.parse(datos);
 	console.log(obj);
     const newMedicion = new Medicion(obj);
-    //newMedicion.save(); 
+    newMedicion.save(); 
 });
 
 var server = http.createServer(app);
