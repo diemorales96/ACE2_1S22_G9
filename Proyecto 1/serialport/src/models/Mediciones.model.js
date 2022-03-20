@@ -6,7 +6,7 @@ const MedicionSchema = new Schema(
       NivelAgua: { type: Number, default: 0 },
       Humedad: { type: Number, default: 0 },
       Turbidez: { type: Number, default: 0 },
-      PH: { type: Number, default: 0 },
+      TurbidezIn: { type: Number, default: 0 },
     },
     {
       versionKey: false,
