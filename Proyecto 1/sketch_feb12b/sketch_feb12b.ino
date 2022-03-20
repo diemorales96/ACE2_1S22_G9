@@ -4,6 +4,8 @@ int volt3 = 5;
 int volt4 = 7;
 int volt5 = 2;
 int volt6 = 22;
+int volt7 = 24;
+int volt8 = 26;
 int s_analogica_mq135 = 0;
 int SENSOR = 1;
 int VALOR;
@@ -11,7 +13,7 @@ String retorno;
 const int pinNivel = A0;
 int sensorNivel = 0;
 const int pinTurbidez = A1; 
-const int pinPh = A3;
+const int pinTurbidezIn = A3;
 
 void setup() {
   Serial.begin(9600);
@@ -25,6 +27,8 @@ void setup() {
   digitalWrite(volt3, true);
   digitalWrite(volt4, true);
   digitalWrite(volt6, true);
+  digitalWrite(volt7, true);
+  digitalWrite(volt8, true);
 }
 
 void loop() {
@@ -39,7 +43,7 @@ void loop() {
   int sensorTurbidez = analogRead(pinTurbidez); 
   delay(500);
    //-------------------- Sensor de PH ------------
-  int sensorPh = analogRead(pinPh); 
+  int sensorTurbidezIn = analogRead(pinTurbidezIn); 
   delay(500);
   //---------------------Retorno------------------------------
   delay(2000);
@@ -51,8 +55,8 @@ void loop() {
   humedad.concat(lectura);
   String turbidez = "\"Turbidez\": ";
   turbidez.concat(sensorTurbidez);
-  String ph = "\"PH\": ";
-  ph.concat(sensorPh);
-  retorno =  nivelAgua + " ," + humedad + " ," + turbidez + " ," + ph + "}";
+  String turbidezin = "\"TurbidezIn\": ";
+  turbidezin.concat(sensorTurbidezIn);
+  retorno =  nivelAgua + " ," + humedad + " ," + turbidez + " ," + turbidezin  + "}";
   Serial.println(retorno);
 }
