@@ -49,6 +49,17 @@ background-color: #fff;
 border-radius: 50px;
 justify-content: center;
 `;
+
+
+export const CuadroX = styled.div`
+display: flex;
+width: 550px;
+height: 120px;
+border: 2px solid var(--bg);
+background-color: #fff;
+border-radius: 50px;
+justify-content: center;
+`;
 export const Cuadro2 = styled.div`
 display: grid;
 width: 90px;

@@ -1,11 +1,12 @@
 import '../index.css'
 import React, { useEffect, useState, useRef } from 'react'
 import { Line, defaults } from "react-chartjs-2";
-import { Cuadro, Rectangulo, Cuadro2, RectanguloB, Carta, Texto } from './StyledElements'
+import { Cuadro, CuadroX,Rectangulo, Cuadro2, RectanguloB, Carta, Texto } from './StyledElements'
 import io from 'socket.io-client';
 import '../App.css';
 import { Nav } from './StyledElements'
 import Select from 'react-select';
+import formula from '../icons/formula.png'
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -28,8 +29,9 @@ function Pruebas() {
 
   //------ PARA DASHBOARD--------
   const [humedad, setHumedad] = useState([])
-  const [turbidez, setTurbidez] = useState([])
+  const [turbidezIn, setTurbidezIn] = useState([])
   const [nivelagua, setNivelagua] = useState([])
+  const [turbidez, setTurbidez] = useState([])
 
   //--------AXIS DE LAS GRAFICAS
   const [axis, setAxis] = useState([0])
@@ -58,8 +60,9 @@ function Pruebas() {
 
   function fillDasboard(data) {
     setHumedad(info => data[data.length - 1].Humedad)
-    setTurbidez(info => data[data.length - 1].Turbidez)
+    setTurbidezIn(info => data[data.length - 1].TurbidezIn)
     setNivelagua(info => data[data.length - 1].NivelAgua)
+    setTurbidez(info => data[data.length - 1].Turbidez)
   }
 
 
@@ -85,66 +88,8 @@ function Pruebas() {
     console.log("GRAFICoooos")
     socket.current.emit("medicion", "asd-prueba");
     socket.current.on("medicion", async (mensaje) => {
-      console.log("MENSAJE: ", mensaje);
-     const auxiliar=[{
-        Fecha: "03 19, 2022 14:51:46",
-        Humedad: 451,
-        NivelAgua: 10,
-        PH: 0,
-        Turbidez: 35,
-        TurbidezIn: 234
-        },
-        {
-        Fecha: "03 19, 2022 14:51:56",
-        Humedad: 321,
-        NivelAgua: 57,
-        PH: 0,
-        Turbidez: 200,
-        TurbidezIn: 24
-        }
-        ,
-        {
-        Fecha: "03 19, 2022 14:52:46",
-        Humedad: 440,
-        NivelAgua: 90,
-        PH: 0,
-        Turbidez: 120,
-        TurbidezIn: 234
-        },
-        {
-        Fecha: "03 18, 2022 14:51:49",
-        Humedad: 466,
-        NivelAgua: 127,
-        PH: 0,
-        Turbidez: 205,
-        TurbidezIn: 234
-        },
-        {
-        Fecha: "03 18, 2022 14:53:22",
-        Humedad: 47,
-        NivelAgua: 100,
-        PH: 0,
-        Turbidez: 206,
-        TurbidezIn: 234
-        },
-        {
-        Fecha: "03 16, 2022 14:01:25",
-        Humedad: 4,
-        NivelAgua: 300,
-        PH: 0,
-        Turbidez: 290,
-        TurbidezIn: 234
-        },
-        {
-          Fecha: "03 16, 2022 14:01:28",
-          Humedad: 402,
-          NivelAgua: 483,
-          PH: 0,
-          Turbidez: 90,
-          TurbidezIn: 234
-          }
-        
-        ]
+    console.log("MENSAJE: ", mensaje);
+
         //setDatos(auxiliar)
       setDatos(mensaje)
 
@@ -167,12 +112,6 @@ function Pruebas() {
         )
       })
 
-     //  setPorcentaje(Array);
-
-
-      //console.log(Array)
-      //setGraph1(Array);
-      //setAxis(fecha);
       saveDate2(mes)
     })
 
@@ -191,7 +130,7 @@ function Pruebas() {
       var fecha_string = new Date(Fecha);
       if(selectedValued!=null){
         if(fecha_string.getDate() + '/' + (fecha_string.getMonth() + 1)==selectedValued.label){
-          wa.push(Math.trunc(100-((humedad*100)/1024)))
+          wa.push(Math.trunc(100-((Humedad*100)/1024)))
           console.log(selectedValued)
           
         }else{
@@ -199,11 +138,11 @@ function Pruebas() {
         }
       }else{
         return (
-          wa.push(Math.trunc(100-((humedad*100)/1024)))
+          wa.push(Math.trunc(100-((Humedad*100)/1024)))
         )
       }
       return(
-        Math.trunc(100-((humedad*100)/1024))
+        Math.trunc(100-((Humedad*100)/1024))
       )
 
     })
@@ -239,7 +178,7 @@ function Pruebas() {
       var fecha_string = new Date(Fecha);
       if(selectedValued!=null){
         if(fecha_string.getDate() + '/' + (fecha_string.getMonth() + 1)==selectedValued.label){
-          nivA.push(NivelAgua)
+          nivA.push(((NivelAgua*452)/660))
           console.log(selectedValued)
           
         }else{
@@ -247,11 +186,11 @@ function Pruebas() {
         }
       }else{
         return (
-          nivA.push(NivelAgua)
+          nivA.push(((NivelAgua*452)/660))
         )
       }
       return(
-        NivelAgua
+        ((NivelAgua*452)/660)
       )
 
     })
@@ -324,18 +263,9 @@ function Pruebas() {
   }, [socket, selectedValued, datos]);
 
 
-
-
-  console.log(selectedValued)
-  console.log("LEEEEEEEEEEEEEEEEEEEN")
-  console.log(axis.length)
-  console.log("LAAAAAAAAAAAAAAAAAAN")
-
   return (
 
     <div>
-      /*******************************/
-      /*NAV Y FILTRO PARA FECHAS */
       <Nav>
         <Texto>
           <h1>DASHBOARD</h1>
@@ -351,8 +281,7 @@ function Pruebas() {
         </div>
       </Nav>
 
-/******************************************************************/
-/*SECCION DE CARD-WRAPPER PARA ALOCAR EL DASHBOARD DE MEDICIONES */
+
       <section className='cards-wrapper2'>
         <div className="card-grid-space">
           <h1>MEDICIONES</h1>
@@ -362,18 +291,33 @@ function Pruebas() {
               <h2>{Math.trunc(100-((humedad*100)/1024))}%</h2>
             </Cuadro>
             <Cuadro>
-              <h2>Turbidez</h2>
-              <h2>{turbidez}NTU</h2>
+              <h2>Suciedad Entrada</h2>
+              
+              <h3>{turbidezIn} (fotodiodos)</h3>
+              
+            </Cuadro>
+            <Cuadro>
+              <h2>Suciedad Salida</h2>
+              <br></br>
+              
+              <h3>{turbidez} (fotodiodos)</h3>
+              
             </Cuadro>
             <Cuadro>
               <h2>Nivel Agua</h2>
-              <h2>{nivelagua}</h2>
+              <h2>{((nivelagua*452)/660).toFixed(3)} cm^3</h2>
             </Cuadro>
+          </a>
+          <a className="cardY" >
+            <div><h2>Niveles de suciedad: </h2></div>
+            <CuadroX>
+              <h3>0-100 fotodiodos (Agua muy limpia)</h3>
+              <h3>101-190 fotodiodos (ligeramente sucia)</h3>
+              <h3>191-... fotodiodos (Agua muy sucia)</h3>
+            </CuadroX>
           </a>
         </div>
       </section>
-
-   
 
       <section className="cards-wrapper">
         <div className="card-grid-space">
@@ -383,7 +327,7 @@ function Pruebas() {
                 labels: axis,
                 datasets: [
                   {
-                    label: "Suciedad vs Tiempo (Al salir de vivienda)",
+                    label: "Suciedad entrada (fotodiodo)",
                     data: graph1,
                     borderColor: "blue",
                     borderWidth: 1,
@@ -419,7 +363,7 @@ function Pruebas() {
                 labels: axis,
                 datasets: [
                   {
-                    label: "Humedad vs tiempo",
+                    label: "Humedad vs tiempo (%)",
                     data: graph2,
                     borderColor: "orange",
                     borderWidth: 1,
@@ -456,7 +400,7 @@ function Pruebas() {
                 labels: axis,
                 datasets: [
                   {
-                    label: "Cant. agua vs tiempo",
+                    label: "Cant. agua vs tiempo (cm^3/s)",
                     data: graph3,
                     borderColor: "red",
                     borderWidth: 1,
@@ -479,7 +423,7 @@ function Pruebas() {
                 },
                 legend: {
                   labels: {
-                    fontSize: 25,
+                    fontSize: 20,
                   },
                 },
               }}
@@ -494,7 +438,7 @@ function Pruebas() {
                 labels: axis,
                 datasets: [
                   {
-                    label: "suciedad vs tiempo (después de filtrado)",
+                    label: "suciedad de salida (fotodiodos)",
                     data: graph4,
                     borderColor: "purple",
                     borderWidth: 1,
@@ -526,40 +470,31 @@ function Pruebas() {
           </a>
         </div>
         <div className="card-grid-space">
-          <a className="card" >
-            <Line
-              data={{
-                labels: [1, 2, 5, 1, 2, 2, 2, 2, 2, 2, 0],
-                datasets: [
-                  {
-                    label: "Tiempo requerido (Agua)",
-                    data: [1, 2, 3, 15, 3, 4, 12, 9, 1, 4, 5],
-                    borderColor: "green",
-                    borderWidth: 1,
-                  },
-                ],
-              }}
-              height={400}
-              width={600}
-              options={{
-                maintainAspectRatio: false,
-                scales: {
-                  yAxes: [
-                    {
-                      ticks: {
-                        beginAtZero: true,
-                      },
-                    },
-                  ],
-                },
-                legend: {
-                  labels: {
-                    fontSize: 25,
-                  },
-                },
-              }}
-            />
+          <a className="cardX" >
 
+            <div>
+
+            <h3>___________________________</h3>
+            <h3>Tiempo de Llenado: <br></br>{(452/(((nivelagua*4)/660)*(3.1416*16))).toFixed(3)} s  </h3>
+            <h3>___________________________</h3>
+            <img src={formula} alt="Logo" />
+            <h2></h2>
+            </div>
+
+
+          </a>
+        </div>
+
+        <div className="card-grid-space">
+          <a className="cardX" >
+            <div>
+            <h3>___________________________</h3>
+            <h3>Dimensiones del Recipiente: </h3>
+            <h3>___________________________</h3>
+            <h2>Alto: 4cm</h2>
+            <h2>Radio: 6cm</h2>
+            <h2>Volumen: 452cm^3</h2>
+            </div>
           </a>
         </div>
       </section>
